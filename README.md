@@ -2,7 +2,8 @@
 Vanilla Prototypical Networks and PNs with Random Weights for image classification on Omniglot and mini-ImageNet. Made with Python3.
 
 # How to use
-First, you need to install the dependencies. You can achieve that by running: sh install_deps.sh.
+First, you need to install the dependencies. You can achieve that by running: 
+* sh install_deps.sh.
 
 With all deps properly installed, you're ready to go.
 
@@ -11,10 +12,10 @@ You can train two models: Prototypical Networks and Prototypical Networks with R
 And there are two available datasets: Omniglot and mini-ImageNet.
 
 All you need to do is to run one of the following commands:
-sh exec_vanilla_omniglot.sh
-sh exec_vanilla_mini_imagenet.sh
-sh exec_random_weights_omniglot.sh
-sh exec_random_weights_mini_imagenet.sh
+* sh exec_vanilla_omniglot.sh
+* sh exec_vanilla_mini_imagenet.sh
+* sh exec_random_weights_omniglot.sh
+* sh exec_random_weights_mini_imagenet.sh
 
 The directories with the prefix "results_" contain my trained models and the execution logs.
 
