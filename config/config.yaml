@@ -1,0 +1,49 @@
+# general parameters
+parameters:
+  learning_rate: 0.001
+  decay_every: 20
+  patience: 200
+  max_epoch: 10000
+  wait: 0
+  stop: false
+
+directories:
+  data_dir: datasets
+  results_dir: results
+  logging_dir: results/logs
+
+# omniglot parameters
+omniglot:
+  train:
+    num_way: 60
+    num_shot: 5
+    num_query: 5
+    epoch_size: 100
+  valid:
+    num_way: 5
+    num_shot: 5
+    num_query: 15
+    epoch_size: 100
+  test:
+    num_way: 5
+    num_shot: 5
+    num_query: 15
+    epoch_size: 1000
+
+# mini_imagenet parameters
+mini_imagenet:
+  train:
+    num_way: 20
+    num_shot: 5
+    num_query: 15
+    epoch_size: 100  
+  valid:
+    num_way: 5
+    num_shot: 5
+    num_query: 15
+    epoch_size: 100
+  test:
+    num_way: 5
+    num_shot: 5
+    num_query: 15
+    epoch_size: 600
