@@ -21,7 +21,17 @@ The directories with the prefix "results_" contain my trained models and the exe
 
 When you run one of the scripts above, the required dataset is automatically downloaded for you and the training begins. The results are be stored in a directory called "results". Bear in mind that you have to rename or delete the results directory before training again.
 
+# About few-shot setup and splits
+You can find the few-shot setup and other parameters in the config directory.
+
+The splits and the implementation follow the procedure of [Prototypical Networks For Few-shot Learning](https://arxiv.org/abs/1703.05175).
+
 The code was tested with Python3 in Debian 10.
+
+# About results
+The results obtained with this implementation are comparable to those obtained with the original one.
+
+You can see it for yourself.
 
 # Acknowledgements
 This project was based on:
