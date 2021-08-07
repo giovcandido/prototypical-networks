@@ -3,7 +3,7 @@ Vanilla Prototypical Networks and PNs with Random Weights for image classificati
 
 # How to use
 First, you need to install the dependencies. You can achieve that by running: 
-* sh install_deps.sh.
+* sh install_deps.sh
 
 With all deps properly installed, you're ready to go.
 
