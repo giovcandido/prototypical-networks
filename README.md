@@ -20,7 +20,17 @@ In case you can't install the requirements as a user, run the following instead:
 sudo pip3 install -r requirements.txt
 ```
 
-With all dependencies properly installed, you're ready to go.
+You also need to install the protonets package with:
+```bash
+pip3 install -e .
+```
+
+You may need to install it with sudo:
+```bash
+sudo pip3 install -e .
+```
+
+After installing the requirements and the package, you're ready to go.
 
 ## Usage
 
