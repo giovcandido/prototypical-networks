@@ -1,6 +1,6 @@
 # Prototypical Networks Project
 
-Vanilla and Prototypical Networks with Random Weights for image classification on Omniglot and mini-ImageNet. 
+Vanilla and Prototypical Networks with Random Weights for image classification on Omniglot and mini-ImageNet.
 
 It's made with Python3 and tested on Linux.
 
@@ -8,9 +8,9 @@ It's made with Python3 and tested on Linux.
 
 Clone the repository or download the compressed source code. If you opted for the latter, you need to extract the source code to a desired directory.
 
-In both cases, open the project directory in your terminal. 
+In both cases, open the project directory in your terminal.
 
-Now, install the dependencies. You can achieve that by running: 
+Now, install the dependencies. You can achieve that by running:
 ```bash
 sh install_deps.sh
 ```
@@ -24,7 +24,7 @@ With all dependencies properly installed, you're ready to go.
 
 ## Usage
 
-You can train two models: 
+You can train two models:
 - Prototypical Networks;
 - Prototypical Networks with Random Weights.
 
@@ -63,7 +63,7 @@ The splits and the implementation follow the procedure of [Prototypical Networks
 
 The results obtained with this implementation are comparable to those obtained with the original one.
 
-You can see it for yourself.
+You can check my execution logs and trained models [here](https://drive.google.com/drive/folders/1O4RR72X0fOBeNdC-g23IwQSri4O1Sm87?usp=sharing).
 
 ## Acknowledgements
 
