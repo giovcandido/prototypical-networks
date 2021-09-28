@@ -1,16 +1,20 @@
 from warnings import filterwarnings
 from torch.autograd import Variable
+from os import path
 
+import pickle
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from utils.distance_measurement import euclidean_dist
+from protonets.utils.yaml_loader import load_yaml
+from protonets.utils.weights_generator import generate_random_weights
+from protonets.utils.distance_measurement import euclidean_dist
 
 # ignore pytorch boring warnings
 filterwarnings("ignore", category=UserWarning)
 
-# the model below computes a class prototype by averaging the support embeddings of a class
+# the model below uses a weigthed average of the support embeddings
 
 # check if there is cuda available
 dev = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
@@ -22,9 +26,9 @@ class Flatten(nn.Module):
     def forward(self, x):
         return x.view(x.size(0), -1)
 
-class ProtoNet(nn.Module):
+class ProtoNetWithRandomWeights(nn.Module):
     def __init__(self, encoder):
-        super(ProtoNet, self).__init__()
+        super(ProtoNetWithRandomWeights, self).__init__()
         self.encoder = encoder.to(dev)
 
     def set_forward_loss(self, episode_dict):
@@ -65,9 +69,43 @@ class ProtoNet(nn.Module):
         # encode all images
         z = self.encoder.forward(x) # embeddings
 
+        directories = load_yaml(path.join('config', 'config.yaml'))['directories']
+        results_dir = directories['results_dir']
+
+        weights_file = path.join(results_dir, 'weights.pkl')
+
+        if path.exists(weights_file):
+            with open(weights_file, 'rb') as f:
+                # retrieve weights already generated
+                weights = pickle.load(f)
+        else:
+            # generate random weights
+            weights = generate_random_weights(num_shot)
+
+            with open(weights_file, 'wb') as f:
+                pickle.dump(weights, f)
+
+        # for each class i
+        for i in range(0, num_way):
+            # index of the first support embedding
+            start = i * num_shot
+
+            # index of the last support embedding is end-1
+            end = start + num_shot
+
+            # index for the weight array
+            k = 0
+
+            # for each support embedding
+            for j in range(start, end):
+                # multiply the embedding by its respective weight
+                z[j] = torch.mul(z[j], weights[k])
+
+                k += 1
+
         # compute class prototypes
         z_dim = z.size(-1)
-        z_proto = z[:(num_way * num_shot)].view(num_way, num_shot, z_dim).mean(1)
+        z_proto = z[:(num_way * num_shot)].view(num_way, num_shot, z_dim).sum(1)
 
         # get the query embeddings
         z_query = z[(num_way * num_shot):]
@@ -94,7 +132,7 @@ class ProtoNet(nn.Module):
 
 # function to load the model structure
 
-def load_protonet(x_dim, hid_dim, z_dim):
+def load_protonet_with_random_weights(x_dim, hid_dim, z_dim):
     # define a convolutional block
     def conv_block(layer_input, layer_output):
         conv = nn.Sequential(
@@ -110,4 +148,4 @@ def load_protonet(x_dim, hid_dim, z_dim):
         conv_block(x_dim[0], hid_dim), conv_block(hid_dim, hid_dim),
         conv_block(hid_dim, hid_dim), conv_block(hid_dim, z_dim), Flatten())
 
-    return ProtoNet(encoder)
+    return ProtoNetWithRandomWeights(encoder)

@@ -8,14 +8,14 @@ import numpy as np
 import torch
 import torch.optim as optim
 
-from core.episode_extractor import extract_episode
-from core.dataset_loader import load_images
-from core.model_loader import load_model
+from protonets.core.episode_extractor import extract_episode
+from protonets.core.dataset_loader import load_images
+from protonets.core.model_loader import load_model
 
-from utils.yaml_loader import load_yaml
-from utils.arguments_parser import parse_arguments
-from utils.log_creator import create_logger
-from utils.time_measurement import measure_time
+from protonets.utils.yaml_loader import load_yaml
+from protonets.utils.arguments_parser import parse_arguments
+from protonets.utils.log_creator import create_logger
+from protonets.utils.time_measurement import measure_time
 
 # function to retrain the model using both train and validation sets
 def retrain(model, opt, retrain_data, logger):

@@ -3,10 +3,10 @@ import os
 import gdown
 import argparse
 
-import utils.new_os_functions as new_os
+import protonets.utils.new_os_functions as new_os
 
-from utils.yaml_loader import load_yaml
-from utils.arguments_parser import parse_dataset
+from protonets.utils.yaml_loader import load_yaml
+from protonets.utils.arguments_parser import parse_dataset
 
 # function to download omniglot dataset
 def download_omniglot(parent_dir):
