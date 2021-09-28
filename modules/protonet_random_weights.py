@@ -1,5 +1,7 @@
+from warnings import filterwarnings
 from torch.autograd import Variable
 from os import path
+
 import pickle
 import torch
 import torch.nn as nn
@@ -8,6 +10,9 @@ import torch.nn.functional as F
 from utils.yaml_loader import load_yaml
 from utils.weights_generator import generate_random_weights
 from utils.distance_measurement import euclidean_dist
+
+# ignore pytorch boring warnings
+filterwarnings("ignore", category=UserWarning)
 
 # the model below uses a weigthed average of the support embeddings
 

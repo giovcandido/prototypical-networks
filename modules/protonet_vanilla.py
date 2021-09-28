@@ -1,9 +1,14 @@
+from warnings import filterwarnings
 from torch.autograd import Variable
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 from utils.distance_measurement import euclidean_dist
+
+# ignore pytorch boring warnings
+filterwarnings("ignore", category=UserWarning)
 
 # the model below computes a class prototype by averaging the support embeddings of a class
 
