@@ -131,8 +131,7 @@ class ProtoNetWithRandomWeights(nn.Module):
 
 
 # function to load the model structure
-
-def load_protonet_with_random_weights(x_dim, hid_dim, z_dim):
+def load_protonet_random_weights(x_dim, hid_dim, z_dim):
     # define a convolutional block
     def conv_block(layer_input, layer_output):
         conv = nn.Sequential(
