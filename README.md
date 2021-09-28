@@ -49,8 +49,6 @@ sh exec_random_weights_omniglot.sh
 sh exec_random_weights_mini_imagenet.sh
 ```
 
-The directories with the prefix "results_" contain my trained models and the execution logs.
-
 When you run one of the scripts above, the required dataset is automatically downloaded for you and the training begins. The results are be stored in a directory called "results". Bear in mind that you have to rename or delete the results directory before training again.
 
 ## Few-Shot Setup
