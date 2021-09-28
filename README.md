@@ -46,7 +46,10 @@ First, you need to go to the __scripts__ directory.
 
 Once you're in this directory, you need to download the datasets.
 
-The dataset_downloader.py script takes a -d/--dataset argument with three possible values: all, omniglot and mini_imagenet.
+The dataset_downloader.py script takes a -d/--dataset argument. There are three possible choices:
+- all;
+- omniglot;
+- mini_imagenet.
 
 As an example, let's suppose we only want to download omniglot:
 ```bash
@@ -55,7 +58,15 @@ python3 dataset_downloader.py -d omniglot
 
 After the download is complete, we can train a model on omniglot.
 
-The training.py script takes two arguments: -m/--model and -d/--dataset. It's important to say that for both arguments there are two possible values. For the first one, these values are: vanilla and random_weights. As for the latter, the values are: omniglot and mini_imagenet.
+The training.py script takes two arguments: -m/--model and -d/--dataset. It's important to say that for both arguments there are two possible values.
+
+For the first one, these values are:
+- vanilla;
+- random_weights.
+
+As for the latter, the values are:
+- omniglot;
+- mini_imagenet.
 
 Since we have downloaded omniglot, let's run:
 ```bash
@@ -72,7 +83,11 @@ And after retraining, we can evaluate our model with:
 python3 evaluation.py
 ```
 
-The results are be stored in a directory called "results". Bear in mind that you have to rename or delete the results directory before training another model. The retraining and the evaluation scripts work with the model obtained when you first execute the training script.
+The results are be stored in a directory called __results__.
+
+Bear in mind that you have to rename or delete the results directory before training another model.
+
+The retraining and the evaluation scripts work with the model obtained when you first execute the training script.
 
 ## Few-Shot Setup
 
