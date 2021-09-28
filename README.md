@@ -10,14 +10,14 @@ Clone the repository or download the compressed source code. If you opted for th
 
 In both cases, open the project directory in your terminal.
 
-Now, install the dependencies. You can achieve that by running:
+Now, install the requirements. You can achieve that by running:
 ```bash
-sh install_requirements.sh
+pip3 install -r requirements.txt
 ```
 
-In case you can't install the dependencies as a user, run the following instead:
+In case you can't install the requirements as a user, run the following instead:
 ```bash
-sudo sh install_requirements.sh
+sudo pip3 install -r requirements.txt
 ```
 
 With all dependencies properly installed, you're ready to go.
