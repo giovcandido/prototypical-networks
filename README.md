@@ -86,7 +86,7 @@ python3 evaluation.py
 
 The results are be stored in a directory called __results__.
 
-Bear in mind that you have to rename or delete the results directory before training another model.
+__Bear in mind__ that you have to rename or delete the results directory before training another model.
 
 The retraining and the evaluation scripts work with the model obtained when you first execute the training script.
 
