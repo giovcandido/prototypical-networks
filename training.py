@@ -19,8 +19,8 @@ from utils.arguments_parser import parse_arguments
 from utils.log_creator import create_logger
 from utils.time_measurement import measure_time
 
-# function to train the model on the train set through many epochs
 
+# function to train the model on the train set through many epochs
 def train(model, opt, train_data, valid_data, logger):
     # set Adam optimizer with an initial learning rate
     optimizer = optim.Adam(
@@ -37,7 +37,7 @@ def train(model, opt, train_data, valid_data, logger):
     epochs_so_far = 0
 
     # train until early stopping says so
-    # or until the max number of epochs is not achived 
+    # or until the max number of epochs is not achived
     while epochs_so_far < opt['max_epoch'] and not opt['stop']:
         epoch_loss = 0.0
         epoch_acc = 0.0
@@ -50,7 +50,7 @@ def train(model, opt, train_data, valid_data, logger):
         for episode in trange(train_data['epoch_size']):
             # get the episode dict
             episode_dict = extract_episode(
-              train_data['train_x'], train_data['train_y'], train_data['num_way'], 
+              train_data['train_x'], train_data['train_y'], train_data['num_way'],
               train_data['num_shot'], train_data['num_query'])
 
             optimizer.zero_grad()
@@ -86,7 +86,7 @@ def train(model, opt, train_data, valid_data, logger):
     best_epoch = opt['best_epoch']
 
     # at the end of the training, output the best loss and the best acc
-    logger.info('Best loss: %.4f / Best Acc: %.2f%%' 
+    logger.info('Best loss: %.4f / Best Acc: %.2f%%'
           % (best_epoch['loss'], (best_epoch['acc'] * 100)))
 
     # save dict with info about the best epoch
@@ -95,7 +95,6 @@ def train(model, opt, train_data, valid_data, logger):
 
 
 # function to evaluate the model on the validation set
-
 def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
     # set model to evaluation mode
     model.eval()
@@ -109,7 +108,7 @@ def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
     for episode in trange(valid_data['epoch_size']):
         # get the episode dict
         episode_dict = extract_episode(
-            valid_data['valid_x'], valid_data['valid_y'], valid_data['num_way'], 
+            valid_data['valid_x'], valid_data['valid_y'], valid_data['num_way'],
             valid_data['num_shot'], valid_data['num_query'])
 
         # classify images and get the loss and the acc of the curr episode
@@ -118,7 +117,7 @@ def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
         # acumulate the loss and the acc
         valid_loss += output['loss']
         valid_acc += output['acc']
-  
+
     # average the loss and the acc to get the valid loss and the acc
     valid_loss = valid_loss / valid_data['epoch_size']
     valid_acc = valid_acc / valid_data['epoch_size']
@@ -156,91 +155,94 @@ def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
             logger.info('Patience was exceeded... Stopping...')
 
 
-
 # now, let's prepare everything and train the model
+def main():
+    # get the chosen model and the dataset
+    args = parse_arguments()
 
-# get the chosen model and the dataset
-args = parse_arguments()
+    # load the desired model
+    model = load_model(args.model, (3, 84, 84), 64, 64)
 
-# load the desired model
-model = load_model(args.model, (3, 84, 84), 64, 64)
+    # read the config file
+    config = load_yaml(path.join('config', 'config.yaml'))
 
-# read the config file
-config = load_yaml(path.join('config', 'config.yaml'))
+    # create a opt dict
+    opt = {}
 
-# create a opt dict 
-opt = {}
+    opt.update(config['parameters'])
+    opt.update(config['directories'])
 
-opt.update(config['parameters'])
-opt.update(config['directories'])
+    # create results dir with logging
+    results_dir_created = new_os.mkdir_if_not_exist(opt['results_dir'])
 
-# create results dir with logging
-results_dir_created = new_os.mkdir_if_not_exist(opt['results_dir'])
+    if not results_dir_created:
+        print('There is already a results directory, you should delete it or rename it')
 
-if not results_dir_created:
-    print('There is already a results directory, you should delete it or rename it')
-    
-    sys.exit()
-    
-new_os.mkdir_if_not_exist(opt['logging_dir'])
+        sys.exit()
 
-# create a best_epoch entry 
-best_epoch_dict = {
-    'best_epoch': {
-        'number': -1,
-        'loss': np.inf,
-        'acc': 0}}
+    new_os.mkdir_if_not_exist(opt['logging_dir'])
 
-# add best_epoch to opt
-opt.update(best_epoch_dict)
+    # create a best_epoch entry
+    best_epoch_dict = {
+        'best_epoch': {
+            'number': -1,
+            'loss': np.inf,
+            'acc': 0}}
 
-# create train_data dict
-train_data = config[args.dataset]['train']
+    # add best_epoch to opt
+    opt.update(best_epoch_dict)
 
-# load train set
-dataset_dir = path.join(opt['data_dir'], args.dataset)
+    # create train_data dict
+    train_data = config[args.dataset]['train']
 
-train_x, train_y = load_images(path.join(dataset_dir, 'train.pkl'))
+    # load train set
+    dataset_dir = path.join(opt['data_dir'], args.dataset)
 
-# add train set to train_data
-train_data.update({
-    'train_x': train_x, 
-    'train_y': train_y})
+    train_x, train_y = load_images(path.join(dataset_dir, 'train.pkl'))
 
-# create valid_data dict
-valid_data = config[args.dataset]['valid']
+    # add train set to train_data
+    train_data.update({
+        'train_x': train_x,
+        'train_y': train_y})
 
-# load valid set
-valid_x, valid_y = load_images(path.join(dataset_dir, 'valid.pkl'))
+    # create valid_data dict
+    valid_data = config[args.dataset]['valid']
 
-# add valid set to valid_data
-valid_data.update({
-    'valid_x': valid_x,
-    'valid_y': valid_y})
+    # load valid set
+    valid_x, valid_y = load_images(path.join(dataset_dir, 'valid.pkl'))
 
-# configure the logger instance
-train_logger = create_logger(opt['logging_dir'], 'train.log')
+    # add valid set to valid_data
+    valid_data.update({
+        'valid_x': valid_x,
+        'valid_y': valid_y})
 
-# run train and compute the time taken
-time_taken = measure_time(train, model, opt, train_data, valid_data, train_logger)
+    # configure the logger instance
+    train_logger = create_logger(opt['logging_dir'], 'train.log')
 
-# check what the best_epoch was
-best_epoch_file = path.join(opt['results_dir'], 'best_epoch.pkl')
+    # run train and compute the time taken
+    time_taken = measure_time(train, model, opt, train_data, valid_data, train_logger)
 
-with open(best_epoch_file, 'rb') as f:
-    number = pickle.load(f)['number']
+    # check what the best_epoch was
+    best_epoch_file = path.join(opt['results_dir'], 'best_epoch.pkl')
 
-train_logger.info('Best epoch was the number: %i' % number)
+    with open(best_epoch_file, 'rb') as f:
+        number = pickle.load(f)['number']
 
-# output the time taken to train
-train_logger.info('Time taken by the training: %s seconds' % str(time_taken))
+    train_logger.info('Best epoch was the number: %i' % number)
 
-# record success, the chosen model and the dataset
-info_dict = {
-    'trained': True,
-    'retrained': False,
-    'model': args.model,
-    'dataset': args.dataset}
+    # output the time taken to train
+    train_logger.info('Time taken by the training: %s seconds' % str(time_taken))
 
-with open(path.join(opt['results_dir'], 'info.json'), 'w', encoding='utf8') as f:
-    json.dump(info_dict, f)
+    # record success, the chosen model and the dataset
+    info_dict = {
+        'trained': True,
+        'retrained': False,
+        'model': args.model,
+        'dataset': args.dataset}
+
+    with open(path.join(opt['results_dir'], 'info.json'), 'w', encoding='utf8') as f:
+        json.dump(info_dict, f)
+
+
+if __name__ == '__main__':
+    main()

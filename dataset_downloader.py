@@ -8,8 +8,8 @@ import utils.new_os_functions as new_os
 from utils.yaml_loader import load_yaml
 from utils.arguments_parser import parse_dataset
 
-# function to download omniglot dataset
 
+# function to download omniglot dataset
 def download_omniglot(parent_dir):
     omniglot_dir = os.path.join(parent_dir, 'omniglot')
 
@@ -33,7 +33,6 @@ def download_omniglot(parent_dir):
 
 
 # function to download mini_imagenet dataset
-
 def download_mini_imagenet(parent_dir):
     mini_imagenet_dir = os.path.join(parent_dir, 'mini_imagenet')
 
@@ -61,29 +60,32 @@ def download_mini_imagenet(parent_dir):
     new_os.rename_file(mini_imagenet_dir, 'mini-imagenet-cache-test.pkl', 'test.pkl')
 
 
+# here, we download the datasets
+def main():
+    # let's capture the chosen dataset
+    args = parse_dataset()
 
-# here, we download the dataset
+    dataset = args.dataset
 
-# let's capture the chosen dataset
-args = parse_dataset()
+    # open config file to get data directory name
+    config_file = os.path.join('config', 'config.yaml')
 
-dataset = args.dataset
+    directories = load_yaml(config_file)['directories']
 
-# open config file to get data directory name
-config_file = os.path.join('config', 'config.yaml')
+    # if not exists, create the data directory to store the datasets
+    data_dir = directories['data_dir']
 
-directories = load_yaml(config_file)['directories']
+    new_os.mkdir_if_not_exist(data_dir)
 
-# if not exists, create the data directory to store the datasets
-data_dir = directories['data_dir']
+    # download the chosen dataset
+    if dataset == 'all':
+        download_omniglot(data_dir)
+        download_mini_imagenet(data_dir)
+    elif dataset == 'omniglot':
+        download_omniglot(data_dir)
+    elif dataset == 'mini_imagenet':
+        download_mini_imagenet(data_dir)
 
-new_os.mkdir_if_not_exist(data_dir)
 
-# download the chosen dataset
-if dataset == 'all':
-    download_omniglot(data_dir)
-    download_mini_imagenet(data_dir)
-elif dataset == 'omniglot':
-    download_omniglot(data_dir)
-elif dataset == 'mini_imagenet':
-    download_mini_imagenet(data_dir)
+if __name__ == '__main__':
+    main()
