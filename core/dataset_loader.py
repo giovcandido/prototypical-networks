@@ -3,7 +3,7 @@ import pickle
 import cv2
 import numpy as np
 
-# function to load images and their labels from a pkl file. 
+# function to load images and their labels from a pkl file.
 
 def load_images(file_name):
     # get file content
@@ -16,7 +16,7 @@ def load_images(file_name):
     # create arrays to store x and y of images
     images = [] # x
     labels = [] # y
-  
+
     # loop over all images and store them
     loading_msg = 'Reading images from %s' % file_name
 
