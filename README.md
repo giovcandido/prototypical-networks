@@ -1,6 +1,6 @@
 # Prototypical Networks Project
 
-Vanilla and Prototypical Networks with Random Weights for image classification on Omniglot and mini-ImageNet.
+This repository has the implementation for both Prototypical Networks and Prototypical Networks with Random Weights. It also has scripts to train these models for the task of few-shot image classification on Omniglot and mini-ImageNet.
 
 It's made with Python3 and tested on Linux.
 
@@ -92,7 +92,7 @@ The retraining and the evaluation scripts work with the model obtained when you 
 
 ## Few-Shot Setup
 
-You can find the few-shot setup and other parameters in the config directory.
+You can find the few-shot setup and other parameters in the __config__ directory.
 
 The splits and the implementation follow the procedure of [Prototypical Networks For Few-shot Learning](https://arxiv.org/abs/1703.05175).
 
