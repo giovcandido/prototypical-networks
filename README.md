@@ -46,10 +46,13 @@ First, you need to go to the __scripts__ directory.
 
 Once you're in this directory, you need to download the datasets.
 
-The dataset_downloader.py script takes a -d/--dataset argument. There are three possible choices:
-- all;
-- omniglot;
-- mini_imagenet.
+The dataset_downloader.py script takes a -d/--dataset argument. If you try to execute it without passing the required argument, you should expect to see the following message:
+```bash
+usage: dataset_downloader.py [-h] -d {all,omniglot,mini_imagenet}
+dataset_downloader.py: error: the following arguments are required: -d/--dataset
+```
+
+Reading the output above we know that there are three possible choices: all, omniglot and mini_imagenet.
 
 As an example, let's suppose we only want to download omniglot:
 ```bash
@@ -58,15 +61,13 @@ python3 dataset_downloader.py -d omniglot
 
 After the download is complete, we can train a model on omniglot.
 
-The training.py script takes two arguments: -m/--model and -d/--dataset. It's important to say that for both arguments there are two possible values.
+The training.py script takes two arguments: -m/--model and -d/--dataset. If you run it without passing the required arguments, you should expect to see the following message:
+```bash
+usage: training.py [-h] -m {vanilla,random_weights} -d {omniglot,mini_imagenet}
+training.py: error: the following arguments are required: -m/--model, -d/--dataset
+```
 
-For the first one, these values are:
-- vanilla;
-- random_weights.
-
-As for the latter, the values are:
-- omniglot;
-- mini_imagenet.
+Reading the output above we know that both arguments have two possible values. For the first one, these values are: vanilla and random_weights. As for the latter, the values are: omniglot and mini_imagenet.
 
 Since we have downloaded omniglot, let's run:
 ```bash
