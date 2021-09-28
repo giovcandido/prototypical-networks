@@ -1,7 +1,6 @@
 import torch
 
 # function to calculate the euclidean distance between embeddings.
-
 def euclidean_dist(x, y):
     elements_in_x = x.size(0)
     elements_in_y = y.size(0)

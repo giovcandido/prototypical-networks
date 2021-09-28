@@ -4,7 +4,6 @@ import cv2
 import numpy as np
 
 # function to load images and their labels from a pkl file.
-
 def load_images(file_name):
     # get file content
     with open(file_name, 'rb') as f:

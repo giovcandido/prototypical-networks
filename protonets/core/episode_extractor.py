@@ -5,7 +5,6 @@ import cv2
 import matplotlib.pyplot as plt
 
 # function to generate one random episode.
-
 def extract_episode(img_set_x, img_set_y, num_way, num_shot, num_query):
     # get a list of all unique labels (no repetition)
     unique_labels = np.unique(img_set_y)
@@ -18,7 +17,7 @@ def extract_episode(img_set_x, img_set_y, num_way, num_shot, num_query):
     # list to store the episode
     episode = []
 
-    # iterate over all selected labels 
+    # iterate over all selected labels
     for label_l in chosen_labels:
         # get all images with a certain label l
         images_with_label_l = img_set_x[img_set_y == label_l]
@@ -43,19 +42,18 @@ def extract_episode(img_set_x, img_set_y, num_way, num_shot, num_query):
 
     # get the shape of the images
     img_dim = episode.shape[2:]
-  
+
     # build a dict with info about the generated episode
     episode_dict = {
-        'images': episode, 'num_way': num_way, 'num_shot': num_shot, 
+        'images': episode, 'num_way': num_way, 'num_shot': num_shot,
         'num_query': num_query, 'img_dim': img_dim}
 
     return episode_dict
 
 
 # function to display a grid representation of an episode.
-
 def display_episode_images(episode_dict):
-    # number of examples per class 
+    # number of examples per class
     examples_per_label = episode_dict['num_shot'] + episode_dict['num_query']
 
     # total number of images
@@ -67,7 +65,7 @@ def display_episode_images(episode_dict):
     # create a grid with all the images
     grid_img = torchvision.utils.make_grid(images, nrow = examples_per_label)
 
-    # reshape the tensor and convert to numpy array of integers 
+    # reshape the tensor and convert to numpy array of integers
     grid_img = grid_img.permute(1, 2, 0).numpy().astype(np.uint8)
 
     # chage image from BGR to RGB

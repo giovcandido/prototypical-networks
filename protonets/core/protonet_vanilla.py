@@ -93,7 +93,6 @@ class ProtoNet(nn.Module):
 
 
 # function to load the model structure
-
 def load_protonet(x_dim, hid_dim, z_dim):
     # define a convolutional block
     def conv_block(layer_input, layer_output):
