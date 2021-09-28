@@ -42,7 +42,10 @@ And there are two available datasets:
 - Omniglot;
 - mini-ImageNet.
 
-All you need to do is to run one of the following commands:
+First, you need to go to the scripts directory.
+
+Then, all you have to do is execute one of the following commands:
+
 ```bash
 sh exec_vanilla_omniglot.sh
 ```
