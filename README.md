@@ -112,4 +112,4 @@ This project was based on:
 
 The idea of PNs can be originally found in [Prototypical Networks for Few-shot Learning](https://arxiv.org/abs/1703.05175).
 
-It's worth mentioning that using weights in order to calculate the prototypes is an idea that can be found in paper [Improved Prototypical Networks for Few-Shot Learning](https://www.sciencedirect.com/science/article/abs/pii/S0167865520302610).
+It's worth mentioning that using weights in order to calculate the prototypes is an idea that can be found in the paper [Improved Prototypical Networks for Few-Shot Learning](https://www.sciencedirect.com/science/article/abs/pii/S0167865520302610).
