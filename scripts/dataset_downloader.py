@@ -1,3 +1,5 @@
+from os import path
+
 import shutil
 import os
 import gdown
@@ -61,18 +63,21 @@ def download_mini_imagenet(parent_dir):
 
 # here, we download the datasets
 def main():
+    # get the path to the script from the current working directory
+    script_path = path.dirname(__file__)
+
     # let's capture the chosen dataset
     args = parse_dataset()
 
     dataset = args.dataset
 
     # open config file to get data directory name
-    config_file = os.path.join('config', 'config.yaml')
+    config_file = os.path.join(script_path, 'config', 'config.yaml')
 
     directories = load_yaml(config_file)['directories']
 
     # if not exists, create the data directory to store the datasets
-    data_dir = directories['data_dir']
+    data_dir = path.join(script_path, directories['data_dir'])
 
     new_os.mkdir_if_not_exist(data_dir)
 

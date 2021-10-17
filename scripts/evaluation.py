@@ -90,14 +90,22 @@ def evaluate_n_times(n, *args):
 
 # let's evaluate the model
 def main():
+    # get the path to the script from the current working directory
+    script_path = path.dirname(__file__)
+
     # read the config file
-    config = load_yaml(path.join('config', 'config.yaml'))
+    config = load_yaml(path.join(script_path, 'config', 'config.yaml'))
 
     # create a opt dict
     opt = {}
 
     opt.update(config['parameters'])
     opt.update(config['directories'])
+
+    # update path to data, results and logging directories
+    opt['data_dir'] = path.join(script_path, opt['data_dir'])
+    opt['results_dir'] = path.join(script_path, opt['results_dir'])
+    opt['logging_dir'] = path.join(script_path, opt['logging_dir'])
 
     # recover the chosen model and the dataset
     with open(path.join(opt['results_dir'], 'info.json'), 'r', encoding='utf8') as f:
