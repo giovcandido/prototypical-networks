@@ -50,7 +50,7 @@ def retrain(model, opt, retrain_data, logger):
         logger.info('==> Epoch %d' % (epochs_so_far + 1))
 
         # do epoch_size classification tasks to evaluate the model
-        for episode in trange(retrain_data['epoch_size']):
+        for _ in trange(retrain_data['epoch_size']):
             # get the episode dict
             episode_dict = extract_episode(
                 retrain_data['retrain_x'], retrain_data['retrain_y'],

@@ -46,7 +46,7 @@ def train(model, opt, train_data, valid_data, logger):
         logger.info('> Training')
 
         # do epoch_size classification tasks to train the model
-        for episode in trange(train_data['epoch_size']):
+        for _ in trange(train_data['epoch_size']):
             # get the episode dict
             episode_dict = extract_episode(
               train_data['train_x'], train_data['train_y'], train_data['num_way'],

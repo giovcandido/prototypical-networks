@@ -29,7 +29,7 @@ def evaluate_test(model, opt, test_data, logger):
     logger.info('> Testing')
 
     # do epoch_size classification tasks to test the model
-    for episode in trange(test_data['epoch_size']):
+    for _ in trange(test_data['epoch_size']):
         # get the episode_dict
         episode_dict = extract_episode(
             test_data['test_x'], test_data['test_y'], test_data['num_way'],
