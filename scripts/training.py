@@ -7,6 +7,7 @@ import sys
 import numpy as np
 import torch
 import torch.optim as optim
+import matplotlib.pyplot as plt
 
 import protonets.utils.new_os_functions as new_os
 
@@ -34,6 +35,10 @@ def train(model, opt, train_data, valid_data, logger):
 
     # number of epochs so far
     epochs_so_far = 0
+
+    history = {
+        'train_loss': [],
+        'valid_loss': []}
 
     # train until early stopping says so
     # or until the max number of epochs is not achived
@@ -73,7 +78,11 @@ def train(model, opt, train_data, valid_data, logger):
         logger.info('Loss: %.4f / Acc: %.2f%%' % (epoch_loss, (epoch_acc * 100)))
 
         # do one epoch of evaluation on the validation test
-        evaluate_valid(model, opt, valid_data, epochs_so_far + 1, logger)
+        valid_loss = evaluate_valid(model, opt, valid_data, epochs_so_far + 1, logger)
+
+        # save epoch and valid loss in the history dict
+        history['train_loss'].append(epoch_loss)
+        history['valid_loss'].append(valid_loss)
 
         # increment the number of epochs
         epochs_so_far += 1
@@ -92,6 +101,8 @@ def train(model, opt, train_data, valid_data, logger):
     with open(path.join(opt['results_dir'], 'best_epoch.pkl'), 'wb') as f:
         pickle.dump(best_epoch, f, pickle.HIGHEST_PROTOCOL)
 
+    # save the loss graph of the training
+    save_loss_graph(epochs_so_far, history, opt['results_dir'])
 
 # function to evaluate the model on the validation set
 def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
@@ -153,6 +164,22 @@ def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
 
             logger.info('Patience was exceeded... Stopping...')
 
+    return valid_loss
+
+# function to save the loss graph of the training
+def save_loss_graph(epochs, history, output_path):
+    epochs = range(0, epochs)
+
+    plt.plot(epochs, history['train_loss'], 'g', label='Training loss')
+    plt.plot(epochs, history['valid_loss'], 'b', label='Validation loss')
+    
+    plt.title('Training and Validation loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    
+    plt.legend()
+    
+    plt.savefig(path.join(output_path, 'loss_graph.png'))
 
 # now, let's prepare everything and train the model
 def main():
