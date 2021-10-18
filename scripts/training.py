@@ -173,11 +173,11 @@ def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
 def save_loss_graph(epochs, history, output_path):
     epochs = range(1, epochs)
 
-    plt.plot(epochs, history['train_loss'], 'g', label='Training loss')
-    plt.plot(epochs, history['valid_loss'], 'b', label='Validation loss')
+    plt.plot(epochs, history['train_loss'], 'c', label='Training loss')
+    plt.plot(epochs, history['valid_loss'], 'r', label='Validation loss')
 
     plt.plot(history['number'], history['loss'], marker="s", markersize=5, 
-             markeredgecolor="black", markerfacecolor="red", 
+             markeredgecolor="black", markerfacecolor="black", 
              label=f"Best epoch: ({history['number']}, {history['loss']:.4f})")
 
     plt.title('Training and Validation loss')
