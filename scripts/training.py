@@ -172,13 +172,16 @@ def main():
     # create a opt dict
     opt = {}
 
+    # add parameters to opt dict
     opt.update(config['parameters'])
-    opt.update(config['directories'])
 
-    # update path to data, results and logging directories
-    opt['data_dir'] = path.join(script_path, opt['data_dir'])
-    opt['results_dir'] = path.join(script_path, opt['results_dir'])
-    opt['logging_dir'] = path.join(script_path, opt['logging_dir'])
+    # add directories to opt dict
+    directories = {
+        'data_dir': path.join(script_path, 'datasets'),
+        'results_dir': path.join(script_path, 'results'),
+        'logging_dir': path.join(script_path, 'results', 'logs')}
+
+    opt.update(directories)
 
     # create results dir with logging
     results_dir_created = new_os.mkdir_if_not_exist(opt['results_dir'])

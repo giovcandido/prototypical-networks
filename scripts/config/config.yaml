@@ -7,11 +7,6 @@ parameters:
   wait: 0
   stop: false
 
-directories:
-  data_dir: datasets
-  results_dir: results
-  logging_dir: results/logs
-
 # omniglot parameters
 omniglot:
   train:

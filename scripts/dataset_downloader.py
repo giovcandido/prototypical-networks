@@ -3,11 +3,9 @@ from os import path
 import shutil
 import os
 import gdown
-import argparse
 
 import protonets.utils.new_os_functions as new_os
 
-from protonets.utils.yaml_loader import load_yaml
 from protonets.utils.arguments_parser import parse_dataset
 
 # function to download omniglot dataset
@@ -68,16 +66,10 @@ def main():
 
     # let's capture the chosen dataset
     args = parse_dataset()
-
     dataset = args.dataset
 
-    # open config file to get data directory name
-    config_file = os.path.join(script_path, 'config', 'config.yaml')
-
-    directories = load_yaml(config_file)['directories']
-
     # if not exists, create the data directory to store the datasets
-    data_dir = path.join(script_path, directories['data_dir'])
+    data_dir = path.join(script_path, 'datasets')
 
     new_os.mkdir_if_not_exist(data_dir)
 
