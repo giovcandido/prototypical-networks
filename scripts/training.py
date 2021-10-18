@@ -93,6 +93,9 @@ def train(model, opt, train_data, valid_data, logger):
     # get dict with info about the best epoch
     best_epoch = opt['best_epoch']
 
+    # Add best epoch to history dict
+    history.update(best_epoch)
+
     # at the end of the training, output the best loss and the best acc
     logger.info('Best loss: %.4f / Best Acc: %.2f%%'
           % (best_epoch['loss'], (best_epoch['acc'] * 100)))
@@ -102,7 +105,7 @@ def train(model, opt, train_data, valid_data, logger):
         pickle.dump(best_epoch, f, pickle.HIGHEST_PROTOCOL)
 
     # save the loss graph of the training
-    save_loss_graph(epochs_so_far, history, opt['results_dir'])
+    save_loss_graph(epochs_so_far + 1, history, opt['results_dir'])
 
 # function to evaluate the model on the validation set
 def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
@@ -168,11 +171,15 @@ def evaluate_valid(model, opt, valid_data, curr_epoch, logger):
 
 # function to save the loss graph of the training
 def save_loss_graph(epochs, history, output_path):
-    epochs = range(0, epochs)
+    epochs = range(1, epochs)
 
     plt.plot(epochs, history['train_loss'], 'g', label='Training loss')
     plt.plot(epochs, history['valid_loss'], 'b', label='Validation loss')
-    
+
+    plt.plot(history['number'], history['loss'], marker="s", markersize=5, 
+             markeredgecolor="black", markerfacecolor="red", 
+             label=f"Best epoch: ({history['number']}, {history['loss']:.4f})")
+
     plt.title('Training and Validation loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
