@@ -24,13 +24,12 @@ class Flatten(nn.Module):
         return x.view(x.size(0), -1)
 
 class WeightedProtoNet(nn.Module):
-    def __init__(self, encoder, weights_path):
+    def __init__(self, encoder):
         super(WeightedProtoNet, self).__init__()
         
         self.encoder = encoder.to(dev)
-        self.weights_path = weights_path
 
-    def set_forward_loss(self, episode_dict):
+    def set_forward_loss(self, episode_dict, weights):
         # extract all images
         images = episode_dict['images'].to(dev)
 
@@ -67,10 +66,6 @@ class WeightedProtoNet(nn.Module):
 
         # encode all images
         z = self.encoder.forward(x) # embeddings
-
-        with open(self.weights_path, 'rb') as f:
-            # retrieve weights already generated
-            weights = pickle.load(f)
 
         # for each class i
         for i in range(0, num_way):
@@ -118,7 +113,7 @@ class WeightedProtoNet(nn.Module):
 
 
 # function to load the model structure
-def load_weighted_protonet(x_dim, hid_dim, z_dim, weights_path):
+def load_weighted_protonet(x_dim, hid_dim, z_dim):
     # define a convolutional block
     def conv_block(layer_input, layer_output):
         conv = nn.Sequential(
@@ -134,4 +129,4 @@ def load_weighted_protonet(x_dim, hid_dim, z_dim, weights_path):
         conv_block(x_dim[0], hid_dim), conv_block(hid_dim, hid_dim),
         conv_block(hid_dim, hid_dim), conv_block(hid_dim, z_dim), Flatten())
 
-    return WeightedProtoNet(encoder, weights_path)
+    return WeightedProtoNet(encoder)
