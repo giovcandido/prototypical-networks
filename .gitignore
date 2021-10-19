@@ -144,3 +144,6 @@ results/
 
 # Datasets
 datasets/
+
+# Pickle files
+*.pkl
