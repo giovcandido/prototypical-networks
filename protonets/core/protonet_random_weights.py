@@ -7,7 +7,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from protonets.utils.yaml_loader import load_yaml
 from protonets.utils.weights_generator import generate_random_weights
 from protonets.utils.distance_measurement import euclidean_dist
 
