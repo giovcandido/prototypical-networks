@@ -10,7 +10,6 @@ from protonets.core.dataset_loader import load_images
 from protonets.core.model_loader import load_model
 
 from protonets.utils.yaml_loader import load_yaml
-from protonets.utils.arguments_parser import parse_arguments
 from protonets.utils.log_creator import create_logger
 from protonets.utils.time_measurement import measure_time
 
@@ -113,11 +112,15 @@ def main():
     with open(path.join(opt['results_dir'], 'info.json'), 'r', encoding='utf8') as f:
         info_dict = json.load(f)
 
-        model = info_dict['model']
+        model_name = info_dict['model']
         dataset = info_dict['dataset']
 
     # load the desired model
-    model = load_model(model, (3, 84, 84), 64, 64)
+    if model_name == 'random_weights':
+        weights_path = path.join(opt['results_dir'], 'weights.pkl')
+        model = load_model(model_name, (3, 84, 84), 64, 64, weights_path)
+    elif model_name == 'vanilla':
+        model = load_model(model_name, (3, 84, 84), 64, 64)
 
     # create test_data dict
     test_data = config[dataset]['test']

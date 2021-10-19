@@ -162,9 +162,6 @@ def main():
     # get the chosen model and the dataset
     args = parse_arguments()
 
-    # load the desired model
-    model = load_model(args.model, (3, 84, 84), 64, 64)
-
     # read the config file
     config_path = path.join(script_path, 'config', 'config.yaml') 
     config = load_yaml(config_path)
@@ -190,7 +187,15 @@ def main():
         print('There is already a results directory, you should delete it or rename it')
 
         sys.exit()
+    
+    # load the desired model
+    if args.model == 'random_weights':
+        weights_path = path.join(opt['results_dir'], 'weights.pkl')
+        model = load_model(args.model, (3, 84, 84), 64, 64, weights_path)
+    elif args.model == 'vanilla':
+        model = load_model(args.model, (3, 84, 84), 64, 64)
 
+    # create log directory
     new_os.mkdir_if_not_exist(opt['logging_dir'])
 
     # create a best_epoch entry

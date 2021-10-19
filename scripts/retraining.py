@@ -13,7 +13,6 @@ from protonets.core.dataset_loader import load_images
 from protonets.core.model_loader import load_model
 
 from protonets.utils.yaml_loader import load_yaml
-from protonets.utils.arguments_parser import parse_arguments
 from protonets.utils.log_creator import create_logger
 from protonets.utils.time_measurement import measure_time
 
@@ -114,18 +113,19 @@ def main():
     with open(path.join(opt['results_dir'], 'info.json'), 'r', encoding='utf8') as f:
         info_dict = json.load(f)
 
-    if not info_dict['trained']:
-        print('Model seems not to be trained yet, train it first')
-
-        sys.exit()
-
     if info_dict['retrained']:
         print('Model was already retrained')
 
         sys.exit()
 
+    model_name = info_dict['model']
+    
     # load the desired model
-    model = load_model(info_dict['model'], (3, 84, 84), 64, 64)
+    if model_name == 'random_weights':
+        weights_path = path.join(opt['results_dir'], 'weights.pkl')
+        model = load_model(model_name, (3, 84, 84), 64, 64, weights_path)
+    elif model_name == 'vanilla':
+        model = load_model(model_name, (3, 84, 84), 64, 64)
 
     # create retrain_data dict
     retrain_data = config[info_dict['dataset']]['train']

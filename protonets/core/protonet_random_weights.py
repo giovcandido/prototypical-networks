@@ -27,9 +27,11 @@ class Flatten(nn.Module):
         return x.view(x.size(0), -1)
 
 class ProtoNetWithRandomWeights(nn.Module):
-    def __init__(self, encoder):
+    def __init__(self, encoder, weights_path):
         super(ProtoNetWithRandomWeights, self).__init__()
+        
         self.encoder = encoder.to(dev)
+        self.weights_path = weights_path
 
     def set_forward_loss(self, episode_dict):
         # extract all images
@@ -68,21 +70,16 @@ class ProtoNetWithRandomWeights(nn.Module):
 
         # encode all images
         z = self.encoder.forward(x) # embeddings
-
-        directories = load_yaml(path.join('config', 'config.yaml'))['directories']
-        results_dir = directories['results_dir']
-
-        weights_file = path.join(results_dir, 'weights.pkl')
-
-        if path.exists(weights_file):
-            with open(weights_file, 'rb') as f:
+        
+        if path.exists(self.weights_path):
+            with open(self.weights_path, 'rb') as f:
                 # retrieve weights already generated
                 weights = pickle.load(f)
         else:
             # generate random weights
             weights = generate_random_weights(num_shot)
 
-            with open(weights_file, 'wb') as f:
+            with open(self.weights_path, 'wb') as f:
                 pickle.dump(weights, f)
 
         # for each class i
@@ -131,7 +128,7 @@ class ProtoNetWithRandomWeights(nn.Module):
 
 
 # function to load the model structure
-def load_protonet_random_weights(x_dim, hid_dim, z_dim):
+def load_protonet_random_weights(x_dim, hid_dim, z_dim, weights_path):
     # define a convolutional block
     def conv_block(layer_input, layer_output):
         conv = nn.Sequential(
@@ -147,4 +144,4 @@ def load_protonet_random_weights(x_dim, hid_dim, z_dim):
         conv_block(x_dim[0], hid_dim), conv_block(hid_dim, hid_dim),
         conv_block(hid_dim, hid_dim), conv_block(hid_dim, z_dim), Flatten())
 
-    return ProtoNetWithRandomWeights(encoder)
+    return ProtoNetWithRandomWeights(encoder, weights_path)
