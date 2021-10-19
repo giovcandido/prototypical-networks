@@ -16,7 +16,7 @@ from protonets.core.model_loader import load_model
 
 from protonets.utils.yaml_loader import load_yaml
 from protonets.utils.arguments_parser import parse_arguments
-from protonets.utils.log_creator import create_logger
+from protonets.utils.logging import get_logger
 from protonets.utils.time_measurement import measure_time
 
 # function to train the model on the train set through many epochs
@@ -233,10 +233,10 @@ def main():
         'valid_y': valid_y})
 
     # configure the logger instance
-    train_logger = create_logger(opt['logging_dir'], 'train.log')
+    logger = get_logger(opt['logging_dir'], 'train.log')
 
     # run train and compute the time taken
-    time_taken = measure_time(train, model, opt, train_data, valid_data, train_logger)
+    time_taken = measure_time(train, model, opt, train_data, valid_data, logger)
 
     # check what the best_epoch was
     best_epoch_file = path.join(opt['results_dir'], 'best_epoch.pkl')
@@ -244,10 +244,10 @@ def main():
     with open(best_epoch_file, 'rb') as f:
         number = pickle.load(f)['number']
 
-    train_logger.info('Best epoch was the number: %i' % number)
+    logger.info('Best epoch was the number: %i' % number)
 
     # output the time taken to train
-    train_logger.info('Time taken by the training: %s seconds' % str(time_taken))
+    logger.info('Time taken by the training: %s seconds' % str(time_taken))
 
     # record success, the chosen model and the dataset
     info_dict = {

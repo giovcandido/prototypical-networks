@@ -3,7 +3,7 @@ import sys
 import logging
 
 # function to remove old and add new handlers to logger.
-def create_logger(log_dir, file_name):
+def get_logger(log_dir, file_name):
     # get logger
     logger = logging.getLogger()
 

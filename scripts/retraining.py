@@ -13,7 +13,7 @@ from protonets.core.dataset_loader import load_images
 from protonets.core.model_loader import load_model
 
 from protonets.utils.yaml_loader import load_yaml
-from protonets.utils.log_creator import create_logger
+from protonets.utils.logging import get_logger
 from protonets.utils.time_measurement import measure_time
 
 # function to retrain the model using both train and validation sets
@@ -142,13 +142,13 @@ def main():
         'retrain_y': np.concatenate((train_y, valid_y))})
 
     # configure the logging instance
-    retrain_logger = create_logger(opt['logging_dir'], 'retrain.log')
+    logger = get_logger(opt['logging_dir'], 'retrain.log')
 
     # run retrain and compute the time taken
-    time_taken = measure_time(retrain, model, opt, retrain_data, retrain_logger)
+    time_taken = measure_time(retrain, model, opt, retrain_data, logger)
 
     # output the time taken to retrain
-    retrain_logger.info('Time taken by the retraining: %s seconds' % str(time_taken))
+    logger.info('Time taken by the retraining: %s seconds' % str(time_taken))
 
     # record success, the chosen model and the dataset
     info_dict['retrained'] = True

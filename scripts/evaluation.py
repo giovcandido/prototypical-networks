@@ -10,7 +10,7 @@ from protonets.core.dataset_loader import load_images
 from protonets.core.model_loader import load_model
 
 from protonets.utils.yaml_loader import load_yaml
-from protonets.utils.log_creator import create_logger
+from protonets.utils.logging import get_logger
 from protonets.utils.time_measurement import measure_time
 
 # function to evaluate the model on test set
@@ -136,13 +136,13 @@ def main():
         'test_y': test_y})
 
     # configure the logging instance
-    test_logger = create_logger(opt['logging_dir'], 'test.log')
+    logger = get_logger(opt['logging_dir'], 'test.log')
 
     # run evaluation on test 15 times
-    time_taken = measure_time(evaluate_n_times, 15, model, opt, test_data, test_logger)
+    time_taken = measure_time(evaluate_n_times, 15, model, opt, test_data, logger)
 
     # output the time taken to test
-    test_logger.info('Time taken by the test: %s seconds' % str(time_taken))
+    logger.info('Time taken by the test: %s seconds' % str(time_taken))
 
 
 if __name__ == '__main__':
