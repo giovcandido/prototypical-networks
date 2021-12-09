@@ -1,6 +1,6 @@
-# Prototypical Networks Project
+# Prototypical Networks
 
-This repository has the implementation for both Prototypical Networks, proposed by Snell et al. in 2017, and Prototypical Networks with Random Weights, proposed by the owner of this repository in 2021.
+This repository has the implementation for both Prototypical Networks, proposed by Snell et al. in 2017, and Prototypical Networks with Random Weights, proposed by the owner of this repository in 2021. It's worth mentioning that Weighted Prototypical Networks are also available now and you can test it with your own weights.
 
 The repository also has scripts to train these models for the task of few-shot image classification on Omniglot and mini-ImageNet.
 
